@@ -1,244 +1,269 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoBot — первый бот для Fluxer</title>
-<style>
-  :root {
-    --bg: #1a1a1e;
-    --bg2: #232329;
-    --card: #2b2b33;
-    --text: #e6e6ea;
-    --muted: #9a9aa5;
-    --accent: #58c47a;
-    --accent2: #f0b429;
-    --danger: #e5484d;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Segoe UI", Roboto, Arial, sans-serif;
-    line-height: 1.6;
-  }
-  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBot — Умный помощник для MyShiled messenger</title>
+    <style>
+        :root {
+            --bg-color: #1e1e2e;
+            --card-bg: #313244;
+            --text-main: #cdd6f4;
+            --text-sec: #a6adc8;
+            --accent: #89b4fa;
+            --danger: #f38ba8;
+            --success: #a6e3a1;
+        }
 
-  header {
-    background: var(--bg2);
-    border-bottom: 1px solid #33333c;
-    padding: 16px 0;
-    position: sticky; top: 0; z-index: 10;
-  }
-  header .container { display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-  .logo .dot {
-    width: 28px; height: 28px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 15px;
-  }
-  nav a { color: var(--muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; }
-  nav a:hover { color: var(--text); }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
 
-  .hero { text-align: center; padding: 70px 0 50px; }
-  .hero h1 { font-size: 2.4rem; margin-bottom: 12px; }
-  .hero h1 span { color: var(--accent); }
-  .hero p { color: var(--muted); font-size: 1.1rem; max-width: 560px; margin: 0 auto 28px; }
-  .badge {
-    display: inline-block; background: var(--card); border: 1px solid #3a3a44;
-    color: var(--accent); padding: 4px 14px; border-radius: 999px;
-    font-size: 0.85rem; margin-bottom: 18px;
-  }
-  .btn {
-    display: inline-block; padding: 12px 28px; border-radius: 10px;
-    text-decoration: none; font-weight: 600; margin: 0 6px 10px;
-    transition: transform .15s, opacity .15s;
-  }
-  .btn:hover { transform: translateY(-2px); opacity: .9; }
-  .btn-primary { background: var(--accent); color: #10241a; }
-  .btn-ghost { background: var(--card); color: var(--text); border: 1px solid #3a3a44; }
+        header {
+            padding: 4rem 1rem;
+            text-align: center;
+        }
 
-  section { padding: 46px 0; }
-  section h2 { font-size: 1.6rem; margin-bottom: 22px; text-align: center; }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--accent), #cba6f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .feature {
-    background: var(--card); border: 1px solid #3a3a44; border-radius: 14px;
-    padding: 20px;
-  }
-  .feature .icon { font-size: 1.6rem; margin-bottom: 8px; }
-  .feature h3 { font-size: 1.05rem; margin-bottom: 6px; }
-  .feature p { color: var(--muted); font-size: 0.93rem; }
+        .badge {
+            display: inline-block;
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-  .cmds { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-  .cmd-group {
-    background: var(--card); border: 1px solid #3a3a44; border-radius: 14px;
-    padding: 20px;
-  }
-  .cmd-group h3 { margin-bottom: 12px; font-size: 1.05rem; }
-  .cmd {
-    display: flex; justify-content: space-between; gap: 12px;
-    padding: 6px 0; border-bottom: 1px dashed #3f3f49; font-size: 0.93rem;
-  }
-  .cmd:last-child { border-bottom: none; }
-  .cmd code {
-    background: #1e1e24; padding: 2px 8px; border-radius: 6px;
-    color: var(--accent2); white-space: nowrap; font-size: 0.85rem;
-  }
-  .cmd span { color: var(--muted); text-align: right; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 0 1rem 3rem;
+        }
 
-  .steps { max-width: 640px; margin: 0 auto; }
-  .step {
-    display: flex; gap: 14px; margin-bottom: 18px;
-    background: var(--card); border: 1px solid #3a3a44; border-radius: 14px; padding: 16px 20px;
-  }
-  .step .num {
-    flex: 0 0 32px; height: 32px; border-radius: 50%;
-    background: var(--accent); color: #10241a; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .step p { color: var(--muted); font-size: 0.95rem; }
-  .step p b { color: var(--text); }
-  .step code {
-    background: #1e1e24; padding: 1px 7px; border-radius: 5px;
-    color: var(--accent2); font-size: 0.85rem;
-  }
+        .feature-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            transition: transform 0.2s;
+        }
 
-  footer {
-    border-top: 1px solid #33333c; padding: 24px 0; text-align: center;
-    color: var(--muted); font-size: 0.9rem;
-  }
-</style>
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+
+        .commands-section {
+            padding: 3rem 1rem;
+            background: #181825;
+        }
+
+        .commands-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .cmd-group {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .cmd-group h3 {
+            color: var(--success);
+            border-bottom: 1px solid var(--text-sec);
+            padding-bottom: 0.5rem;
+        }
+
+        .cmd-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .cmd-item {
+            background: var(--card-bg);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: monospace;
+            color: var(--accent);
+        }
+
+        .install-block {
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+
+        .install-block h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .install-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-pc {
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .btn-pc:hover {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .btn-server {
+            background: var(--accent);
+            color: var(--bg-color);
+            box-shadow: 0 4px 6px rgba(137, 180, 250, 0.4);
+        }
+
+        .btn-server:hover {
+            background: #7aa2f4;
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-sec);
+            font-size: 0.9rem;
+            border-top: 1px solid #313244;
+        }
+
+        @media (max-width: 600px) {
+            .install-buttons {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="container">
-    <div class="logo"><span class="dot">🤖</span> AutoBot</div>
-    <nav>
-      <a href="#features">Возможности</a>
-      <a href="#commands">Команды</a>
-      <a href="#install">Установка</a>
-    </nav>
-  </div>
-</header>
+    <header>
+        <h1>AutoBot</h1>
+        <div class="badge">Работает 24/7 на твоём компьютере</div>
+        <p style="color: var(--text-sec); max-width: 600px; margin: 1rem auto;">
+            Мощный MyShiled messenger - бот на базе Fluxer. Автоматические роли, умные опросы с автором, меню на реакциях и гибкая настройка через базу данных.
+        </p>
+    </header>
 
-<div class="hero">
-  <div class="container">
-    <div class="badge">⚡ работает 24/7 на твоём компьютере</div>
-    <h1>AutoBot — <span>самый первый бот</span> для MySHield messenger</h1>
-    <p>Игры, опросы, приветствия новичков и автовыдача ролей. Всё, что нужно сообществу, — в одном боте с командами на русском.</p>
-    <a class="btn btn-primary" href="#install">🚀 Установить</a>
-    <a class="btn btn-ghost" href="#commands">📋 Список команд</a>
-  </div>
-</div>
+    <section class="features-grid">
+        <div class="feature-card">
+            <h3>🎮 Игры и развлечения</h3>
+            <p>Бросай кубики, подбрасывай монетку и выбирай варианты прямо в чате.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🗳️ Умные опросы</h3>
+            <p>Создавай голосования с реакциями. Теперь видно, кто именно запустил опрос.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🎭 Автороли</h3>
+            <p>Настраивай выдачу ролей новым участникам сервера одной командой.</p>
+        </div>
+        <div class="feature-card">
+            <h3>💬 Приветствия</h3>
+            <p>Настраивай кастомные сообщения для новичков в любом канале.</p>
+        </div>
+        <div class="feature-card">
+            <h3>📊 База данных</h3>
+            <p>Все настройки сохраняются в SQLite и не сбрасываются при перезапуске.</p>
+        </div>
+        <div class="feature-card">
+            <h3>🛡️ Безопасность</h3>
+            <p>Команда остановки доступна только владельцу бота.</p>
+        </div>
+    </section>
 
-<section id="features">
-  <div class="container">
-    <h2>Что умеет</h2>
-    <div class="features">
-      <div class="feature">
-        <div class="icon">🎲</div>
-        <h3>Игры и развлечения</h3>
-        <p>Кубик, монетка, выбор за тебя и меню на реакциях — скучать в чате не придётся.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">🗳️</div>
-        <h3>Опросы</h3>
-        <p>Голосование с реакциями 👍/👎 в один клик — с указанием, кто запустил опрос.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">👋</div>
-        <h3>Приветствия</h3>
-        <p>Встречает каждого новичка в заданном канале и пишет ваш собственный текст.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">🎭</div>
-        <h3>Автовыдача ролей</h3>
-        <p>Новый участник зашёл — роль выдана автоматически. Настраивается одной командой.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">⚙️</div>
-        <h3>Гибкие настройки</h3>
-        <p>Все параметры хранятся в базе данных — настройки не сбрасываются после перезапуска.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">🛡️</div>
-        <h3>Безопасно</h3>
-        <p>Критичные команды защищены, токен хранится в локальном файле .env.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="commands-section">
+        <h2>Основные команды</h2>
+        
+        <div class="cmd-group">
+            <h3>Общие</h3>
+            <ul class="cmd-list">
+                <li class="cmd-item">!ping</li>
+                <li class="cmd-item">!say [текст]</li>
+                <li class="cmd-item">!roll [число]</li>
+                <li class="cmd-item">!coin</li>
+                <li class="cmd-item">!choose [варианты]</li>
+                <li class="cmd-item">!poll [вопрос]</li>
+                <li class="cmd-item">!uptime</li>
+            </ul>
+        </div>
 
-<section id="commands">
-  <div class="container">
-    <h2>📋 Команды</h2>
-    <div class="cmds">
-      <div class="cmd-group">
-        <h3>💬 Общие</h3>
-        <div class="cmd"><code>!help [раздел]</code><span>справка</span></div>
-        <div class="cmd"><code>!ping</code><span>проверка связи</span></div>
-        <div class="cmd"><code>!say &lt;текст&gt;</code><span>повторить текст</span></div>
-        <div class="cmd"><code>!roll [N]</code><span>случайное число</span></div>
-        <div class="cmd"><code>!coin</code><span>монетка</span></div>
-        <div class="cmd"><code>!choose ...</code><span>выбор варианта</span></div>
-        <div class="cmd"><code>!poll &lt;вопрос&gt;</code><span>опрос с реакциями</span></div>
-        <div class="cmd"><code>!uptime</code><span>время работы</span></div>
-      </div>
-      <div class="cmd-group">
-        <h3>🎮 Развлечения</h3>
-        <div class="cmd"><code>!menu</code><span>меню на реакциях</span></div>
-        <h3 style="margin-top:16px">📊 Инфо</h3>
-        <div class="cmd"><code>!serverinfo</code><span>инфо о сообществе</span></div>
-        <div class="cmd"><code>!roles</code><span>роли на сервере</span></div>
-      </div>
-      <div class="cmd-group">
-        <h3>⚙️ Настройки</h3>
-        <div class="cmd"><code>!setup welcome_channel</code><span>канал приветствий</span></div>
-        <div class="cmd"><code>!setup welcome_text</code><span>текст приветствия</span></div>
-        <div class="cmd"><code>!autorole @роль</code><span>авто-роль новичкам</span></div>
-        <div class="cmd"><code>!autorole null</code><span>выключить авто-роль</span></div>
-        <div class="cmd"><code>!cfg</code><span>текущие настройки</span></div>
-      </div>
-      <div class="cmd-group">
-        <h3>🛡️ Админ</h3>
-        <div class="cmd"><code>!stop</code><span>остановка бота</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+        <div class="cmd-group">
+            <h3>Настройки и Админ</h3>
+            <ul class="cmd-list">
+                <li class="cmd-item">!setup welcome_channel</li>
+                <li class="cmd-item">!autorole @роль</li>
+                <li class="cmd-item">!cfg</li>
+                <li class="cmd-item">!stop (только владелец)</li>
+            </ul>
+        </div>
+    </section>
 
-<section id="install">
-  <div class="container">
-    <h2>🚀 Как установить</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="num">1</div>
-        <p><b>Скачай файлы бота</b> — <code>main.py</code>, <code>setup.py</code> и <code>start_bot.bat</code> из репозитория.</p>
-      </div>
-      <div class="step">
-        <div class="num">2</div>
-        <p><b>Установи Python 3.11+</b> и зависимости: <code>pip install -U fluxer aiosqlite python-dotenv</code></p>
-      </div>
-      <div class="step">
-        <div class="num">3</div>
-        <p><b>Создай файл <code>.env</code></b> рядом с ботом и впиши туда токен: <code>BOT_TOKEN=твой_токен</code></p>
-      </div>
-      <div class="step">
-        <div class="num">4</div>
-        <p><b>Запусти</b> <code>start_bot.bat</code> — откроется панель управления. Нажми «Запустить» и пиши <code>!help</code> в чате!</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="install-block">
+        <h2>Как начать?</h2>
+        <p style="color: var(--text-sec); margin-bottom: 2rem;">Выбери вариант установки под свои задачи:</p>
+        
+        <div class="install-buttons">
+            <!-- Кнопка для ПК (заглушка, ведет на README или скачивание) -->
+            <a href="https://github.com/KriperBoom/AutoBot" class="btn btn-pc" onclick="alert('Скачайте архив с кодом бота и запустите start_bot.bat'); return false;">
+                🖥️ Установить на ПК
+            </a>
 
-<footer>
-  <div class="container">
-    AutoBot • сделано с ❤️ для сообщества YarikPrime • 2026
-  </div>
-</footer>
+            <!-- ТВОЯ ССЫЛКА НА СЕРВЕР -->
+            <a href="https://msg.my-shield.dev/oauth2/authorize?client_id=1571276131582083072&scope=bot&permissions=33787427532832767" 
+               class="btn btn-server" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                🚀 Установить на сервер
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 AutoBot by KriperBoom. Проект с открытым исходным кодом.
+    </footer>
 
 </body>
 </html>
