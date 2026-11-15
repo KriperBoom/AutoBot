@@ -1,9 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoBot — Умный помощник для MyShiled messenger</title>
+    <title>AutoBot — Умный помощник для MyShield messenger</title>
+
+    <!-- Иконка вкладки (favicon) -->
+    <link rel="icon" href="https://msg.my-shield.dev/media/avatars/1571276131582083072/30cb736d.webp?size=160" type="image/webp">
+
     <style>
         :root {
             --bg-color: #1e1e2e;
@@ -25,12 +30,25 @@
         }
 
         header {
-            padding: 4rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
         }
 
+        /* Стили для лого */
+        .site-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            object-fit: cover;
+            margin-bottom: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
             background: linear-gradient(90deg, var(--accent), #cba6f7);
             -webkit-background-clip: text;
@@ -174,16 +192,25 @@
             .btn {
                 width: 100%;
             }
+            .site-logo {
+                width: 100px;
+                height: 100px;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <!-- Логотип сайта -->
+        <img src="https://msg.my-shield.dev/media/avatars/1571276131582083072/30cb736d.webp?size=160" 
+             alt="AutoBot Logo" 
+             class="site-logo">
+        
         <h1>AutoBot</h1>
         <div class="badge">Работает 24/7 на твоём компьютере</div>
         <p style="color: var(--text-sec); max-width: 600px; margin: 1rem auto;">
-            Мощный MyShiled messenger - бот на базе Fluxer. Автоматические роли, умные опросы с автором, меню на реакциях и гибкая настройка через базу данных.
+            Мощный MyShield messenger-бот на базе Fluxer. Автоматические роли, умные опросы с автором, меню на реакциях и гибкая настройка через базу данных.
         </p>
     </header>
 
@@ -246,12 +273,12 @@
         <p style="color: var(--text-sec); margin-bottom: 2rem;">Выбери вариант установки под свои задачи:</p>
         
         <div class="install-buttons">
-            <!-- Кнопка для ПК (заглушка, ведет на README или скачивание) -->
-        <a href="https://github.com/KriperBoom/AutoBot" class="btn btn-pc">
-            🖥️ Установить на ПК
-        </a>
+            <!-- Кнопка для ПК -->
+            <a href="https://github.com/KriperBoom/AutoBot" class="btn btn-pc">
+                🖥️ Установить на ПК
+            </a>
 
-            <!-- ТВОЯ ССЫЛКА НА СЕРВЕР -->
+            <!-- Ссылка на сервер -->
             <a href="https://msg.my-shield.dev/oauth2/authorize?client_id=1571276131582083072&scope=bot&permissions=33787427532832767" 
                class="btn btn-server" 
                target="_blank" 
