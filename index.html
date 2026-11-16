@@ -1,296 +1,200 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoBot — Умный помощник для MyShield messenger</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoBotAI — умный бот</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+  }
 
-    <!-- Иконка вкладки (favicon) -->
-    <link rel="icon" href="https://msg.my-shield.dev/media/avatars/1571276131582083072/30cb736d.webp?size=160" type="image/webp">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <style>
-        :root {
-            --bg-color: #1e1e2e;
-            --card-bg: #313244;
-            --text-main: #cdd6f4;
-            --text-sec: #a6adc8;
-            --accent: #89b4fa;
-            --danger: #f38ba8;
-            --success: #a6e3a1;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+  }
 
-        header {
-            padding: 3rem 1rem;
-            text-align: center;
-        }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+  }
 
-        /* Стили для лого */
-        .site-logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            object-fit: cover;
-            margin-bottom: 1rem;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+  .logo {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, var(--accent), #cba6f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
 
-        .badge {
-            display: inline-block;
-            background: var(--danger);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 99px;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+  }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            padding: 0 1rem 3rem;
-        }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
 
-        .feature-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid var(--accent);
-            transition: transform 0.2s;
-        }
+  .hero {
+    text-align: center;
+    padding: 80px 0 60px;
+  }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
+  .hero h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
 
-        .feature-card h3 {
-            color: var(--accent);
-            margin-top: 0;
-        }
+  .hero h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-        .commands-section {
-            padding: 3rem 1rem;
-            background: #181825;
-        }
+  .hero p {
+    color: var(--muted);
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
 
-        .commands-section h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+  section {
+    padding: 40px 0;
+  }
 
-        .cmd-group {
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
-        }
+  section h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
 
-        .cmd-group h3 {
-            color: var(--success);
-            border-bottom: 1px solid var(--text-sec);
-            padding-bottom: 0.5rem;
-        }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
 
-        .cmd-list {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.5rem;
-        }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s, border-color 0.2s;
+  }
 
-        .cmd-item {
-            background: var(--card-bg);
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-family: monospace;
-            color: var(--accent);
-        }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(124, 58, 237, 0.5);
+  }
 
-        .install-block {
-            padding: 3rem 1rem;
-            text-align: center;
-        }
+  .card .icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
 
-        .install-block h2 {
-            margin-bottom: 1.5rem;
-        }
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
 
-        .install-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
+  .card p {
+    color: var(--muted);
+    font-size: 15px;
+  }
 
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-        }
-
-        .btn-pc {
-            background: var(--card-bg);
-            color: var(--text-main);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        .btn-pc:hover {
-            background: var(--text-main);
-            color: var(--bg-color);
-        }
-
-        .btn-server {
-            background: var(--accent);
-            color: var(--bg-color);
-            box-shadow: 0 4px 6px rgba(137, 180, 250, 0.4);
-        }
-
-        .btn-server:hover {
-            background: #7aa2f4;
-            transform: scale(1.05);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-sec);
-            font-size: 0.9rem;
-            border-top: 1px solid #313244;
-        }
-
-        @media (max-width: 600px) {
-            .install-buttons {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-            }
-            .site-logo {
-                width: 100px;
-                height: 100px;
-            }
-        }
-    </style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 40px;
+  }
+</style>
 </head>
 <body>
-
+  <div class="container">
     <header>
-        <!-- Логотип сайта -->
-        <img src="https://msg.my-shield.dev/media/avatars/1571276131582083072/30cb736d.webp?size=160" 
-             alt="AutoBot Logo" 
-             class="site-logo">
-        
-        <h1>AutoBot</h1>
-        <div class="badge">Работает 24/7 на твоём компьютере</div>
-        <p style="color: var(--text-sec); max-width: 600px; margin: 1rem auto;">
-            Мощный MyShield messenger-бот на базе Fluxer. Автоматические роли, умные опросы с автором, меню на реакциях и гибкая настройка через базу данных.
-        </p>
+      <div class="logo">AutoBotAI</div>
+      <a href="#features" class="btn ghost">Подробнее</a>
     </header>
 
-    <section class="features-grid">
-        <div class="feature-card">
-            <h3>🎮 Игры и развлечения</h3>
-            <p>Бросай кубики, подбрасывай монетку и выбирай варианты прямо в чате.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🗳️ Умные опросы</h3>
-            <p>Создавай голосования с реакциями. Теперь видно, кто именно запустил опрос.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🎭 Автороли</h3>
-            <p>Настраивай выдачу ролей новым участникам сервера одной командой.</p>
-        </div>
-        <div class="feature-card">
-            <h3>💬 Приветствия</h3>
-            <p>Настраивай кастомные сообщения для новичков в любом канале.</p>
-        </div>
-        <div class="feature-card">
-            <h3>📊 База данных</h3>
-            <p>Все настройки сохраняются в SQLite и не сбрасываются при перезапуске.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🛡️ Безопасность</h3>
-            <p>Команда остановки доступна только владельцу бота.</p>
-        </div>
+    <section class="hero">
+      <h1>Умный бот<br><span>для твоего сообщества</span></h1>
+      <p>Отвечает на вопросы, помнит диалог, проводит голосования и всегда на связи.</p>
+      <a href="#features" class="btn">Попробовать</a>
     </section>
 
-    <section class="commands-section">
-        <h2>Основные команды</h2>
-        
-        <div class="cmd-group">
-            <h3>Общие</h3>
-            <ul class="cmd-list">
-                <li class="cmd-item">!ping</li>
-                <li class="cmd-item">!say [текст]</li>
-                <li class="cmd-item">!roll [число]</li>
-                <li class="cmd-item">!coin</li>
-                <li class="cmd-item">!choose [варианты]</li>
-                <li class="cmd-item">!poll [вопрос]</li>
-                <li class="cmd-item">!uptime</li>
-            </ul>
+    <section id="features">
+      <h2>Что умеет</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🧠</div>
+          <h3>ИИ с памятью</h3>
+          <p>Помнит твой диалог и подстраивается под стиль общения.</p>
         </div>
-
-        <div class="cmd-group">
-            <h3>Настройки и Админ</h3>
-            <ul class="cmd-list">
-                <li class="cmd-item">!setup welcome_channel</li>
-                <li class="cmd-item">!autorole @роль</li>
-                <li class="cmd-item">!cfg</li>
-                <li class="cmd-item">!stop (только владелец)</li>
-            </ul>
+        <div class="card">
+          <div class="icon">🎁</div>
+          <h3>Приветствия и роли</h3>
+          <p>Встречает новичков и автоматически выдаёт им роль.</p>
         </div>
-    </section>
-
-    <section class="install-block">
-        <h2>Как начать?</h2>
-        <p style="color: var(--text-sec); margin-bottom: 2rem;">Выбери вариант установки под свои задачи:</p>
-        
-        <div class="install-buttons">
-            <!-- Кнопка для ПК -->
-            <a href="https://github.com/KriperBoom/AutoBot" class="btn btn-pc">
-                🖥️ Установить на ПК
-            </a>
-
-            <!-- Ссылка на сервер -->
-            <a href="https://msg.my-shield.dev/oauth2/authorize?client_id=1571276131582083072&scope=bot&permissions=33787427532832767" 
-               class="btn btn-server" 
-               target="_blank" 
-               rel="noopener noreferrer">
-                🚀 Установить на сервер
-            </a>
+        <div class="card">
+          <div class="icon">📋</div>
+          <h3>Меню и опросы</h3>
+          <p>Голосования, меню на реакциях, игры с кубиком и монеткой.</p>
         </div>
+        <div class="card">
+          <div class="icon">⚡</div>
+          <h3>Быстрые ответы</h3>
+          <p>Заглушка «Думаю...» и живой таймер, пока мозг соображает.</p>
+        </div>
+      </div>
     </section>
 
     <footer>
-        &copy; 2026 AutoBot by KriperBoom. Проект с открытым исходным кодом.
+      © 2026 AutoBotAI · Сделано с 💜
     </footer>
-
+  </div>
 </body>
 </html>
