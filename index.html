@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutoBotAI — умный бот</title>
+<title>AutoBot — умный бот для твоего сервера</title>
 <style>
   :root {
     --bg: #0d1117;
@@ -108,6 +108,13 @@
     text-align: center;
   }
 
+  section h2 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -143,6 +150,68 @@
     font-size: 15px;
   }
 
+  .card ul {
+    list-style: none;
+    margin-top: 12px;
+  }
+
+  .card ul li {
+    padding: 6px 0;
+    color: var(--muted);
+    font-size: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .card ul li:last-child {
+    border-bottom: none;
+  }
+
+  .card code {
+    background: rgba(124, 58, 237, 0.15);
+    color: #c4b5fd;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .commands-wide {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    backdrop-filter: blur(10px);
+  }
+
+  .cmd-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .cmd-row:last-child {
+    border-bottom: none;
+  }
+
+  .cmd-row code {
+    background: rgba(124, 58, 237, 0.15);
+    color: #c4b5fd;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+    min-width: 150px;
+  }
+
+  .cmd-row span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
   footer {
     border-top: 1px solid var(--border);
     padding: 24px 0;
@@ -156,44 +225,74 @@
 <body>
   <div class="container">
     <header>
-      <div class="logo">AutoBotAI</div>
-      <a href="#features" class="btn ghost">Подробнее</a>
+      <div class="logo">AutoBot</div>
+      <a href="#commands" class="btn ghost">Все команды</a>
     </header>
 
     <section class="hero">
       <h1>Умный бот<br><span>для твоего сообщества</span></h1>
-      <p>Отвечает на вопросы, помнит диалог, проводит голосования и всегда на связи.</p>
-      <a href="#features" class="btn">Попробовать</a>
+      <p>Отвечает на вопросы, помнит диалог, встречает новичков и следит за порядком.</p>
+      <a href="#commands" class="btn">Посмотреть команды</a>
     </section>
 
     <section id="features">
-      <h2>Что умеет</h2>
+      <h2>Что умеет <span>AutoBot</span></h2>
       <div class="grid">
         <div class="card">
           <div class="icon">🧠</div>
           <h3>ИИ с памятью</h3>
-          <p>Помнит твой диалог и подстраивается под стиль общения.</p>
+          <p>Задавай вопросы через <code>!ai</code> или упоминание <code>@AutoBot</code>. Бот помнит твой диалог и подстраивается под тебя.</p>
+          <ul>
+            <li>Настройки: <code>!ai-settings</code></li>
+            <li>Случайный факт: <code>!fact</code></li>
+          </ul>
         </div>
         <div class="card">
           <div class="icon">🎁</div>
           <h3>Приветствия и роли</h3>
-          <p>Встречает новичков и автоматически выдаёт им роль.</p>
+          <p>Встречает новичков в заданном канале и автоматически выдаёт им роль.</p>
+          <ul>
+            <li><code>!setup welcome_channel</code></li>
+            <li><code>!autorole @роль</code></li>
+          </ul>
         </div>
         <div class="card">
           <div class="icon">📋</div>
           <h3>Меню и опросы</h3>
-          <p>Голосования, меню на реакциях, игры с кубиком и монеткой.</p>
-        </div>
-        <div class="card">
-          <div class="icon">⚡</div>
-          <h3>Быстрые ответы</h3>
-          <p>Заглушка «Думаю...» и живой таймер, пока мозг соображает.</p>
+          <p>Голосования и интерактивное меню на реакциях — управление без команд.</p>
+          <ul>
+            <li><code>!poll вопрос</code></li>
+            <li><code>!menu</code></li>
+          </ul>
         </div>
       </div>
     </section>
 
+    <section id="commands">
+      <h2>Полный <span>список команд</span></h2>
+      <div class="commands-wide">
+        <div class="cmd-row"><code>!ping</code><span>проверить, жив ли бот, и узнать задержку</span></div>
+        <div class="cmd-row"><code>!say текст</code><span>бот повторит твой текст и удалит команду</span></div>
+        <div class="cmd-row"><code>!roll [N]</code><span>случайное число от 1 до N</span></div>
+        <div class="cmd-row"><code>!coin</code><span>подбросить монетку</span></div>
+        <div class="cmd-row"><code>!choose в1 в2 ...</code><span>бот выберет один из вариантов</span></div>
+        <div class="cmd-row"><code>!poll вопрос</code><span>голосование с реакциями 👍/👎</span></div>
+        <div class="cmd-row"><code>!ai вопрос</code><span>спросить AutoBot (с памятью диалога)</span></div>
+        <div class="cmd-row"><code>@AutoBot вопрос</code><span>то же самое, просто через упоминание</span></div>
+        <div class="cmd-row"><code>!fact</code><span>случайный интересный факт</span></div>
+        <div class="cmd-row"><code>!ai-settings</code><span>память, стиль и температура ИИ</span></div>
+        <div class="cmd-row"><code>!menu</code><span>меню на реакциях</span></div>
+        <div class="cmd-row"><code>!uptime</code><span>сколько бот уже работает</span></div>
+        <div class="cmd-row"><code>!serverinfo</code><span>участники, каналы, роли, дата создания</span></div>
+        <div class="cmd-row"><code>!roles</code><span>какие роли бот видит на сервере</span></div>
+        <div class="cmd-row"><code>!setup</code><span>приветствия: канал, текст, отключение</span></div>
+        <div class="cmd-row"><code>!autorole</code><span>автовыдача роли новичкам</span></div>
+        <div class="cmd-row"><code>!cfg</code><span>показать все настройки сообщества</span></div>
+      </div>
+    </section>
+
     <footer>
-      © 2026 AutoBotAI · Сделано с 💜
+      © 2026 AutoBot · Сделано с 💜
     </footer>
   </div>
 </body>
